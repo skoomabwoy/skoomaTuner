@@ -16,6 +16,7 @@ public:
 
     void paint(juce::Graphics&) override;
     void resized() override;
+    void mouseDown(const juce::MouseEvent&) override;
 
 private:
     void timerCallback() override;
@@ -23,6 +24,7 @@ private:
     SkoomaTunerProcessor& processor;
 
     juce::Font monoFont;
+    juce::Font iconFont;
     juce::ComponentBoundsConstrainer constrainer;
 
     float displayFreq = 0.0f;
@@ -30,6 +32,10 @@ private:
     int displayNoteIndex = 0;
     int displayOctave = 4;
     float smoothedCents = 0.0f;
+    float needleVelocity = 0.0f;
+    float strobePhase = 0.0f;
+    bool strobeMode = false;
+    bool darkMode = true;
 
     static constexpr const char* noteNames[] = {
         "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"

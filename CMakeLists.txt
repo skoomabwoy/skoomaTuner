@@ -56,6 +56,7 @@ juce_add_plugin(SkoomaTuner
 juce_add_binary_data(FontData
     SOURCES
         Source/fonts/JetBrainsMono-Bold-subset.ttf
+        Source/fonts/fa-solid-subset.ttf
 )
 
 target_sources(SkoomaTuner
