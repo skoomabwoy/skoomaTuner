@@ -1,26 +1,40 @@
 # SkoomaTuner
 
-A minimal VST3 tuner plugin built with JUCE. No external runtime dependencies — everything is statically linked.
+A minimal VST3 tuner plugin.
 
-## Credits
+<table><tr>
+<td><img src="screenshots/dark-theme-needle.png" width="200"></td>
+<td><img src="screenshots/dark-theme-strobe.png" width="200"></td>
+<td><img src="screenshots/light-theme-needle.png" width="200"></td>
+<td><img src="screenshots/light-theme-strobe.png" width="200"></td>
+</tr></table>
 
-The pitch detection engine is extracted from [StompTuner](https://github.com/brummer10/StompTuner) by **Hermann Meyer (brummer10)**, which itself derives from the [Guitarix](https://guitarix.org/) project (Hermann Meyer, James Warden, Andreas Degert). The algorithm is NSDF (Normalized Square Difference Function), based on work by Philip McLeod (Tartini).
+Needle and strobe modes, dark and light themes. Spring-damped needle physics.
 
-The resampler is [zita-resampler](https://kokkinizita.linuxaudio.org/linuxaudio/) by Fons Adriaensen.
+## Install
 
-## Building
+Download the VST3 for your platform from the [Releases](https://github.com/skoomabwoy/SkoomaTuner/releases) page. Extract and copy the `.vst3` bundle to your VST3 folder.
 
-Requires: CMake 3.22+, C++17 compiler. All other dependencies (JUCE, FFTW3) are fetched and built automatically.
+Supported platforms: **Linux**, **Windows**, **macOS**.
+
+<details>
+<summary>Alternatively, you can build from source</summary>
+
+CMake 3.22+, C++17 compiler. All dependencies (JUCE, FFTW3) are fetched automatically.
 
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
 
-The VST3 bundle is at `build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3/`.
+Copy `build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3/` to your VST3 folder.
 
-Copy to `~/.vst3/` to install.
+</details>
+
+## Credits
+
+Pitch detection from [StompTuner](https://github.com/brummer10/StompTuner) by Hermann Meyer (brummer10), derived from [Guitarix](https://guitarix.org/). NSDF algorithm based on work by Philip McLeod (Tartini). Resampler: [zita-resampler](https://kokkinizita.linuxaudio.org/linuxaudio/) by Fons Adriaensen. Icons: [Font Awesome Free](https://fontawesome.com/) (SIL OFL 1.1).
 
 ## License
 
-GPL-3.0 — required by the combination of JUCE (GPLv3), zita-resampler (GPL-3.0), and Guitarix pitch detection code (GPL-2.0-or-later).
+GPL-3.0
