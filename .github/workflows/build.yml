@@ -17,29 +17,36 @@ permissions:
   contents: write
 
 jobs:
+  matrix-setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - id: set
+        run: |
+          if [ "${{ inputs.platforms }}" = "all" ]; then
+            echo 'matrix={"include":[{"os":"ubuntu-latest","name":"Linux","key":"linux"},{"os":"windows-latest","name":"Windows","key":"windows"},{"os":"macos-latest","name":"macOS","key":"macos"}]}' >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.platforms }}" = "linux" ]; then
+            echo 'matrix={"include":[{"os":"ubuntu-latest","name":"Linux","key":"linux"}]}' >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.platforms }}" = "windows" ]; then
+            echo 'matrix={"include":[{"os":"windows-latest","name":"Windows","key":"windows"}]}' >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.platforms }}" = "macos" ]; then
+            echo 'matrix={"include":[{"os":"macos-latest","name":"macOS","key":"macos"}]}' >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: matrix-setup
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            name: Linux
-            key: linux
-          - os: windows-latest
-            name: Windows
-            key: windows
-          - os: macos-latest
-            name: macOS
-            key: macos
+      matrix: ${{ fromJSON(needs.matrix-setup.outputs.matrix) }}
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.name }}
-    if: ${{ inputs.platforms == 'all' || inputs.platforms == matrix.key }}
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Cache CMake build
+      - name: Cache CMake deps
         uses: actions/cache@v4
         with:
           path: build/_deps
