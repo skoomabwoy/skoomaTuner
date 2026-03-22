@@ -1,6 +1,6 @@
 # SkoomaTuner
 
-A minimal VST3 tuner plugin for Linux, built with JUCE.
+A minimal VST3 tuner plugin built with JUCE. No external runtime dependencies — everything is statically linked.
 
 ## Credits
 
@@ -10,7 +10,7 @@ The resampler is [zita-resampler](https://kokkinizita.linuxaudio.org/linuxaudio/
 
 ## Building
 
-Requires: CMake 3.22+, FFTW3 (`fftw` package), C++17 compiler.
+Requires: CMake 3.22+, C++17 compiler. All other dependencies (JUCE, FFTW3) are fetched and built automatically.
 
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release

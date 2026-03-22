@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "")
 project(SkoomaTuner VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -14,9 +15,19 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(JUCE)
 
-# Find FFTW3 (single-precision)
-find_library(FFTW3F_LIB fftw3f REQUIRED)
-find_path(FFTW3_INCLUDE_DIR fftw3.h REQUIRED)
+# Build FFTW3 (single-precision) from source as a static library
+FetchContent_Declare(
+    fftw3
+    URL      https://www.fftw.org/fftw-3.3.10.tar.gz
+    URL_HASH MD5=8ccbf6a5ea78a16dbc3e1306e234cc5c
+)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ENABLE_FLOAT ON CACHE BOOL "" FORCE)
+set(ENABLE_THREADS OFF CACHE BOOL "" FORCE)
+set(ENABLE_OPENMP OFF CACHE BOOL "" FORCE)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+FetchContent_MakeAvailable(fftw3)
 
 # DSP sources (extracted from StompTuner)
 set(DSP_SOURCES
@@ -66,15 +77,17 @@ target_compile_definitions(SkoomaTuner
         JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
+find_package(Threads REQUIRED)
+
 target_link_libraries(SkoomaTuner
     PRIVATE
         FontData
         juce::juce_audio_utils
-        ${FFTW3F_LIB}
-        pthread
+        fftw3f
+        Threads::Threads
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags
 )
 
-target_include_directories(SkoomaTuner PRIVATE ${FFTW3_INCLUDE_DIR})
+target_include_directories(SkoomaTuner PRIVATE ${fftw3_SOURCE_DIR}/api)

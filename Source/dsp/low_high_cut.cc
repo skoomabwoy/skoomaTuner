@@ -5,7 +5,11 @@
 #include <algorithm>
 
 template<class T> inline T mydsp_faustpower2_f(T x) {return (x * x);}
+#if defined(_MSC_VER)
+#define always_inline __forceinline
+#else
 #define always_inline inline __attribute__((always_inline))
+#endif
 
 namespace low_high_cut {
 
