@@ -1,10 +1,7 @@
 name: Build VST3
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,7 +19,7 @@ jobs:
     name: ${{ matrix.name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
@@ -37,7 +34,7 @@ jobs:
         run: cmake --build build --config Release --parallel
 
       - name: Upload VST3
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: SkoomaTuner-${{ matrix.name }}-VST3
           path: build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3
