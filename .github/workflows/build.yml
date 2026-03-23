@@ -68,54 +68,55 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           cd build/SkoomaTuner_artefacts/Release/VST3
-          zip -r ../../../../SkoomaTuner-${{ matrix.name }}.zip SkoomaTuner.vst3
+          zip -r ../../../../skoomaTuner-${{ matrix.name }}.zip skoomaTuner.vst3
 
       - name: Package VST3 (macOS DMG)
         if: runner.os == 'macOS'
         run: |
           DMG_DIR=dmg_contents
           mkdir -p "$DMG_DIR"
-          cp -R build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3 "$DMG_DIR/"
-          ln -s /Library/Audio/Plug-Ins/VST3 "$DMG_DIR/VST3 Plug-Ins"
+          cp -R build/SkoomaTuner_artefacts/Release/VST3/skoomaTuner.vst3 "$DMG_DIR/"
           cat > "$DMG_DIR/README.txt" << 'README'
-          SkoomaTuner — VST3 Tuner Plugin
+          skoomaTuner — VST3 Tuner Plugin
 
           INSTALLATION
-          1. Drag SkoomaTuner.vst3 into the "VST3 Plug-Ins" folder.
-             This links to /Library/Audio/Plug-Ins/VST3 (system-wide).
-             You can also use ~/Library/Audio/Plug-Ins/VST3 (per-user).
-          2. Open Terminal and run:
-             xattr -cr /Library/Audio/Plug-Ins/VST3/SkoomaTuner.vst3
-             (adjust the path if you installed to a different location)
-          3. Restart your DAW. SkoomaTuner will appear in your plugin list.
+          1. Copy skoomaTuner.vst3 to ~/Library/Audio/Plug-Ins/VST3/
+             If the folder doesn't exist yet, run in Terminal:
+             mkdir -p ~/Library/Audio/Plug-Ins/VST3
+          2. Remove the quarantine flag — run in Terminal:
+             xattr -cr ~/Library/Audio/Plug-Ins/VST3/skoomaTuner.vst3
+          3. Restart your DAW. skoomaTuner will appear in your plugin list.
 
-          The xattr command is needed because the plugin is not signed
-          with an Apple Developer certificate. Without it macOS will
-          show a "damaged" warning and refuse to load the plugin.
+          WHY IS STEP 2 NEEDED?
+          The plugin is not signed with an Apple Developer certificate
+          (we'd rather not pay $99/year for a free plugin). It's safe —
+          the source code is open at github.com/skoomabwoy/SkoomaTuner.
+          The xattr command just removes the quarantine flag so macOS
+          lets it load.
           README
-          hdiutil create -volname SkoomaTuner \
+          hdiutil create -volname skoomaTuner \
             -srcfolder "$DMG_DIR" \
             -ov -format UDZO \
-            SkoomaTuner-${{ matrix.name }}.dmg
+            skoomaTuner-${{ matrix.name }}.dmg
 
       - name: Package VST3 (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3 -DestinationPath SkoomaTuner-${{ matrix.name }}.zip
+        run: Compress-Archive -Path build/SkoomaTuner_artefacts/Release/VST3/skoomaTuner.vst3 -DestinationPath skoomaTuner-${{ matrix.name }}.zip
 
       - name: Upload artifact (zip)
         if: runner.os != 'macOS'
         uses: actions/upload-artifact@v7
         with:
-          name: SkoomaTuner-${{ matrix.name }}
-          path: SkoomaTuner-${{ matrix.name }}.zip
+          name: skoomaTuner-${{ matrix.name }}
+          path: skoomaTuner-${{ matrix.name }}.zip
 
       - name: Upload artifact (dmg)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v7
         with:
-          name: SkoomaTuner-${{ matrix.name }}
-          path: SkoomaTuner-${{ matrix.name }}.dmg
+          name: skoomaTuner-${{ matrix.name }}
+          path: skoomaTuner-${{ matrix.name }}.dmg
 
   release:
     needs: build
@@ -134,12 +135,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          VERSION=$(date +%Y.%m.%d)-$(echo ${{ github.sha }} | cut -c1-7)
+          VERSION=$(grep -oP 'project\(SkoomaTuner VERSION \K[0-9.]+' CMakeLists.txt)
           FILES=""
-          for f in artifacts/SkoomaTuner-*/SkoomaTuner-*.zip artifacts/SkoomaTuner-*/SkoomaTuner-*.dmg; do
+          for f in artifacts/skoomaTuner-*/skoomaTuner-*.zip artifacts/skoomaTuner-*/skoomaTuner-*.dmg; do
             [ -f "$f" ] && FILES="$FILES $f"
           done
           gh release create "v${VERSION}" \
-            --title "SkoomaTuner v${VERSION}" \
-            --notes "VST3 tuner plugin. Download the zip for your platform and extract the .vst3 bundle into your VST3 folder." \
+            --title "skoomaTuner v${VERSION}" \
+            --notes "VST3 tuner plugin. Download for your platform and copy the .vst3 bundle to your VST3 folder. Windows: C:\Program Files\Common Files\VST3. macOS: see README in the .dmg. Linux: ~/.vst3 or /usr/lib/vst3." \
             $FILES

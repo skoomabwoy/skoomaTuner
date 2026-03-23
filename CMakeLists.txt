@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "")
-project(SkoomaTuner VERSION 0.1.0)
+project(SkoomaTuner VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,11 +36,11 @@ set(DSP_SOURCES
 )
 
 juce_add_plugin(SkoomaTuner
-    COMPANY_NAME       "SkoomaDSP"
+    COMPANY_NAME       "skoomaDSP"
     PLUGIN_MANUFACTURER_CODE Skom
     PLUGIN_CODE        SkTn
     FORMATS            VST3
-    PRODUCT_NAME       "SkoomaTuner"
+    PRODUCT_NAME       "skoomaTuner"
     IS_SYNTH           FALSE
     NEEDS_MIDI_INPUT   FALSE
     NEEDS_MIDI_OUTPUT  FALSE

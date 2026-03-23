@@ -1,5 +1,5 @@
 /*
-    SkoomaTuner - VST3 Tuner Plugin
+    skoomaTuner - VST3 Tuner Plugin
     Based on pitch detection from StompTuner (Hermann Meyer et al.)
     License: GPL-3.0
 */

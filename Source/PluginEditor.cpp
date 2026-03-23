@@ -1,5 +1,5 @@
 /*
-    SkoomaTuner - VST3 Tuner Plugin
+    skoomaTuner - VST3 Tuner Plugin
     License: GPL-3.0
 */
 

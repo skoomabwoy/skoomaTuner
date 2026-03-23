@@ -1,4 +1,4 @@
-# SkoomaTuner
+# skoomaTuner
 
 A minimal VST3 tuner plugin.
 
@@ -15,8 +15,9 @@ Needle and strobe modes, dark and light themes. Spring-damped needle physics.
 
 Download the VST3 for your platform from the [Releases](https://github.com/skoomabwoy/SkoomaTuner/releases) page.
 
-- **Linux / Windows**: Extract the `.zip` and copy the `.vst3` bundle to your VST3 folder.
-- **macOS**: Open the `.dmg`, drag `SkoomaTuner.vst3` into the `VST3 Plug-Ins` folder, then run `xattr -cr ~/Library/Audio/Plug-Ins/VST3/SkoomaTuner.vst3` in Terminal.
+- **Linux**: Extract the `.zip` and copy `skoomaTuner.vst3` to `~/.vst3/` or `/usr/lib/vst3/`.
+- **Windows**: Extract the `.zip` and copy `skoomaTuner.vst3` to `C:\Program Files\Common Files\VST3\`.
+- **macOS**: Open the `.dmg`, drag `skoomaTuner.vst3` into the `VST3 Plug-Ins` folder, then run `xattr -cr ~/Library/Audio/Plug-Ins/VST3/skoomaTuner.vst3` in Terminal. This is needed because the plugin is unsigned (we don't want to pay $99/year for a free plugin).
 
 <details>
 <summary>Alternatively, you can build from source</summary>
@@ -28,7 +29,7 @@ cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
 
-Copy `build/SkoomaTuner_artefacts/Release/VST3/SkoomaTuner.vst3/` to your VST3 folder.
+Copy `build/SkoomaTuner_artefacts/Release/VST3/skoomaTuner.vst3/` to your VST3 folder.
 
 </details>
 
