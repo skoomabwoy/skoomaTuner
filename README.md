@@ -11,6 +11,8 @@ A minimal VST3 tuner plugin.
 
 Needle and strobe modes, dark and light themes. Spring-damped needle physics.
 
+Part of a series of small, minimal VST3 plugins: see also [skoomaLoud](https://github.com/skoomabwoy/SkoomaLoud) (loudness meter).
+
 ## Install
 
 Download the VST3 for your platform from the [Releases](https://github.com/skoomabwoy/SkoomaTuner/releases) page.

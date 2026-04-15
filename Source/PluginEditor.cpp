@@ -265,11 +265,25 @@ void SkoomaTunerEditor::paint(juce::Graphics& g)
         g.drawRoundedRectangle(bandX, bandY, bandW, bandH, 4.0f * scale, 1.0f * scale);
     }
 
-    // --- Toggle: theme (top-left) ---
+    // --- Toggle: mode (top-left) ---
     float iconSize = 33.0f * scale;
     float iconPad = 8.0f * scale;
 
-    float themeX = iconPad;
+    float modeX = iconPad;
+    float modeY = iconPad;
+    g.setColour(t.toggleBg);
+    g.fillRoundedRectangle(modeX, modeY, iconSize, iconSize, 3.0f * scale);
+    g.setColour(t.toggleBorder);
+    g.drawRoundedRectangle(modeX, modeY, iconSize, iconSize, 3.0f * scale, 1.0f * scale);
+
+    g.setColour(t.toggleIcon);
+    g.setFont(iconFont.withHeight(iconSize * 0.6f));
+    g.drawText(juce::String::charToString(juce::juce_wchar(0xf629)),
+               juce::Rectangle<float>(modeX, modeY, iconSize, iconSize),
+               juce::Justification::centred, false);
+
+    // --- Toggle: theme (top-right) ---
+    float themeX = w - iconSize - iconPad;
     float themeY = iconPad;
     g.setColour(t.toggleBg);
     g.fillRoundedRectangle(themeX, themeY, iconSize, iconSize, 3.0f * scale);
@@ -280,20 +294,6 @@ void SkoomaTunerEditor::paint(juce::Graphics& g)
     g.setFont(iconFont.withHeight(iconSize * 0.6f));
     g.drawText(juce::String::charToString(juce::juce_wchar(0xf042)),
                juce::Rectangle<float>(themeX, themeY, iconSize, iconSize),
-               juce::Justification::centred, false);
-
-    // --- Toggle: mode (top-right) ---
-    float modeX = w - iconSize - iconPad;
-    float modeY = iconPad;
-    g.setColour(t.toggleBg);
-    g.fillRoundedRectangle(modeX, modeY, iconSize, iconSize, 3.0f * scale);
-    g.setColour(t.toggleBorder);
-    g.drawRoundedRectangle(modeX, modeY, iconSize, iconSize, 3.0f * scale, 1.0f * scale);
-
-    g.setColour(t.toggleIcon);
-    g.setFont(iconFont.withHeight(iconSize * 0.6f));
-    g.drawText(juce::String::charToString(juce::juce_wchar(strobe ? 0xf629 : 0xf13a)),
-               juce::Rectangle<float>(modeX, modeY, iconSize, iconSize),
                juce::Justification::centred, false);
 
     // --- Text displays (only when signal present) ---
@@ -338,8 +338,8 @@ void SkoomaTunerEditor::mouseDown(const juce::MouseEvent& e)
     float iconSize = 33.0f * scale;
     float iconPad = 8.0f * scale;
 
-    // Mode toggle (top-right)
-    juce::Rectangle<float> modeRect(w - iconSize - iconPad, iconPad, iconSize, iconSize);
+    // Mode toggle (top-left)
+    juce::Rectangle<float> modeRect(iconPad, iconPad, iconSize, iconSize);
     if (modeRect.contains(e.position))
     {
         processor.strobeMode.store(!processor.strobeMode.load());
@@ -347,8 +347,8 @@ void SkoomaTunerEditor::mouseDown(const juce::MouseEvent& e)
         return;
     }
 
-    // Theme toggle (top-left)
-    juce::Rectangle<float> themeRect(iconPad, iconPad, iconSize, iconSize);
+    // Theme toggle (top-right)
+    juce::Rectangle<float> themeRect(w - iconSize - iconPad, iconPad, iconSize, iconSize);
     if (themeRect.contains(e.position))
     {
         processor.darkMode.store(!processor.darkMode.load());
