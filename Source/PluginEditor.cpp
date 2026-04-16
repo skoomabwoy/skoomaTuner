@@ -63,8 +63,8 @@ SkoomaTunerEditor::SkoomaTunerEditor(SkoomaTunerProcessor& p)
     : AudioProcessorEditor(&p), processor(p)
 {
     auto typeface = juce::Typeface::createSystemTypefaceFor(
-        BinaryData::JetBrainsMonoBoldsubset_ttf,
-        BinaryData::JetBrainsMonoBoldsubset_ttfSize);
+        BinaryData::JetBrainsMonoBold_ttf,
+        BinaryData::JetBrainsMonoBold_ttfSize);
     monoFont = juce::Font(juce::FontOptions(typeface));
 
     iconMeter = juce::Drawable::createFromImageData(BinaryData::meter_svg, BinaryData::meter_svgSize);
