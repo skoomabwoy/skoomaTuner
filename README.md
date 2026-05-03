@@ -10,6 +10,7 @@
 Needle and strobe modes, with note name + cents offset readout. Dark and light themes. Spring-damped needle physics.
 
 Part of a series of small, minimal VST3 plugins:
+- [skoomaNAM](https://github.com/skoomabwoy/skoomaNAM) (NAM/IR loader)
 - [skoomaLoud](https://github.com/skoomabwoy/skoomaLoud) (loudness meter)
 - [skoomaImage](https://github.com/skoomabwoy/skoomaImage) (stereo image)
 - [skoomaFilter](https://github.com/skoomabwoy/skoomaFilter) (LP filter)
